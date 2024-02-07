@@ -5,5 +5,6 @@
         "source.organizeImports": "always",
         "source.fixAll": "always"
     },
-    "editor.wordWrap": "on"
+    "editor.wordWrap": "on",
+    "eslint.workingDirectories": [{ "directory": ".", "changeProcessCWD": true }]
 }
