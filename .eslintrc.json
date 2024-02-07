@@ -1,0 +1,64 @@
+{
+    "root": true,
+    "ignorePatterns": ["**/*"],
+    "plugins": ["@nx"],
+    "overrides": [
+        {
+            "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+            "extends": [
+                "airbnb",
+                "airbnb/hooks",
+                "plugin:import/typescript",
+                "plugin:react/recommended",
+                "plugin:react-hooks/recommended",
+                "prettier"
+            ],
+            "rules": {
+                "@nx/enforce-module-boundaries": [
+                    "error",
+                    {
+                        "enforceBuildableLibDependency": true,
+                        "allow": [],
+                        "depConstraints": [
+                            {
+                                "sourceTag": "*",
+                                "onlyDependOnLibsWithTags": ["*"]
+                            }
+                        ]
+                    }
+                ],
+                "react-hooks/rules-of-hooks": "error",
+                "react/react-in-jsx-scope": "off",
+                "react/jsx-filename-extension": ["error", { "extensions": [".tsx"] }],
+                "import/no-named-as-default": "off",
+                "import/extensions": [
+                    "error",
+                    "ignorePackages",
+                    {
+                        "js": "never",
+                        "jsx": "never",
+                        "ts": "never",
+                        "tsx": "never"
+                    }
+                ]
+            }
+        },
+        {
+            "files": ["*.ts", "*.tsx"],
+            "extends": ["plugin:@nx/typescript"],
+            "rules": {}
+        },
+        {
+            "files": ["*.js", "*.jsx"],
+            "extends": ["plugin:@nx/javascript"],
+            "rules": {}
+        },
+        {
+            "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
+            "env": {
+                "jest": true
+            },
+            "rules": {}
+        }
+    ]
+}
