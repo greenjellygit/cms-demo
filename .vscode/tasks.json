@@ -1,0 +1,45 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "start-cms-web",
+            "type": "shell",
+            "command": "nx run cms-web:serve",
+            "options": {
+                "cwd": "${workspaceFolder}/apps/cms-web"
+            },
+            "isBackground": true,
+            "problemMatcher": {
+                "owner": "custom",
+                "pattern": {
+                    "regexp": ".",
+                    "file": 1,
+                    "location": 2,
+                    "message": 3
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "webpack-dev-server",
+                    "endsPattern": "compiled successfully"
+                }
+            },
+            "presentation": {
+                "close": true,
+                "reveal": "silent"
+            }
+        },
+        {
+            "label": "stop-cms-web",
+            "type": "shell",
+            "command": "echo ${input:terminate}"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "terminate",
+            "type": "command",
+            "command": "workbench.action.tasks.terminate",
+            "args": "terminateAll"
+        }
+    ]
+}

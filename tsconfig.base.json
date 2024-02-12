@@ -15,7 +15,10 @@
         "allowSyntheticDefaultImports": true,
         "resolveJsonModule": true,
         "strict": true,
+        "sourceMap": true,
         "paths": {
+            "@cms-utils": ["libs/cms-utils/src/index.ts"],
+            "@cms/model": ["libs/cms-model/src/index.ts"],
             "@cms/ui": ["libs/cms-ui/src/index.ts"]
         }
     },
