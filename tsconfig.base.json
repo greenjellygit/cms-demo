@@ -16,6 +16,8 @@
         "resolveJsonModule": true,
         "strict": true,
         "sourceMap": true,
+        "strictPropertyInitialization": false,
+        "experimentalDecorators": true,
         "paths": {
             "@cms-utils": ["libs/cms-utils/src/index.ts"],
             "@cms/model": ["libs/cms-model/src/index.ts"],

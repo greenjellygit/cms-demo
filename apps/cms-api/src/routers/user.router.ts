@@ -1,35 +1,18 @@
-import { User } from '@cms/model'
-import { Request, Router } from 'express'
+import { User, UserCreate } from '@cms/model'
+import { Response, Router } from 'express'
+import {
+    TypedRequest as TypRequest,
+    TypedResponse as TypResponse,
+    validate,
+} from '../core/request.validator'
+import * as userService from '../services/user.service'
 
 export const router = Router()
 
-const usersDb: User[] = [
-    {
-        id: 1,
-        name: 'John',
-        registrationDate: new Date(new Date().setDate(new Date().getDate() - 125)),
-    },
-    {
-        id: 2,
-        name: 'Mike',
-        registrationDate: new Date(new Date().setDate(new Date().getDate() - 45)),
-    },
-    {
-        id: 3,
-        name: 'Adam',
-        registrationDate: new Date(new Date().setDate(new Date().getDate() - 3)),
-    },
-]
-
-router.get('/', (req: Request, res) => {
-    res.send(usersDb)
+router.get('/', (req: TypRequest<void>, res: Response<User[]>) => {
+    res.send(userService.getUsers())
 })
 
-router.post('/', (req: Request, res) => {
-    usersDb.push({
-        id: Math.max(...usersDb.map((user) => user.id)) + 1,
-        name: req.body.userName,
-        registrationDate: new Date(),
-    })
-    res.send(usersDb)
+router.post('/', validate(UserCreate), (req: TypRequest<UserCreate>, res: TypResponse<User[]>) => {
+    res.send(userService.createUser(req.body))
 })

@@ -41,7 +41,10 @@
                     }
                 ],
                 "import/prefer-default-export": "off",
-                "react/jsx-props-no-spreading": "off"
+                "react/jsx-props-no-spreading": "off",
+                "lines-between-class-members": "off",
+                "max-classes-per-file": "off",
+                "consistent-return": "off"
             }
         },
         {
