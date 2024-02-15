@@ -6,7 +6,7 @@ export class UserCreate {
     userName: string
 }
 
-export class User {
+export class UserOut {
     id: number
     name: string
     registrationDate: Date

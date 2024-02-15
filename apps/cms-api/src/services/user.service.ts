@@ -1,32 +1,15 @@
-import { User, UserCreate } from '@cms/model'
+import { UserCreate } from '@cms/model'
+import { DB } from '../db'
+import { UserEntity } from '../entities/user.entity'
 
-const usersDb: User[] = [
-    {
-        id: 1,
-        name: 'John',
-        registrationDate: new Date(new Date().setDate(new Date().getDate() - 125)),
-    },
-    {
-        id: 2,
-        name: 'Mike',
-        registrationDate: new Date(new Date().setDate(new Date().getDate() - 45)),
-    },
-    {
-        id: 3,
-        name: 'Adam',
-        registrationDate: new Date(new Date().setDate(new Date().getDate() - 3)),
-    },
-]
-
-export function getUsers(): User[] {
-    return usersDb
+export function getUsers(): Promise<UserEntity[]> {
+    return DB.users.findAll()
 }
 
-export function createUser(userCreate: UserCreate): User[] {
-    usersDb.push({
-        id: Math.max(...usersDb.map((user) => user.id)) + 1,
-        name: userCreate.userName,
-        registrationDate: new Date(),
+export async function createUser(userCreate: UserCreate): Promise<UserEntity[]> {
+    DB.users.create({
+        login: userCreate.userName,
     })
-    return usersDb
+    await DB.em.flush()
+    return DB.users.findAll()
 }
