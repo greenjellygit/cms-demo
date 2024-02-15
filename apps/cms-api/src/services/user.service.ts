@@ -1,6 +1,6 @@
 import { UserCreate } from '@cms/model'
-import { DB } from '../db'
 import { UserEntity } from '../entities/user.entity'
+import { DB } from '../mikro-orm.config'
 
 export function getUsers(): Promise<UserEntity[]> {
     return DB.users.findAll()

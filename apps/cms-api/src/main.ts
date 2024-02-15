@@ -2,7 +2,7 @@ import { RequestContext } from '@mikro-orm/core'
 import cors from 'cors'
 import express from 'express'
 import * as path from 'path'
-import { initDb } from './db'
+import { initDb } from './mikro-orm.config'
 import { routers } from './routers'
 
 const app = express()

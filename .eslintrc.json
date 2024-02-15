@@ -1,10 +1,19 @@
 {
     "root": true,
-    "ignorePatterns": ["**/*"],
-    "plugins": ["@nx"],
+    "ignorePatterns": [
+        "**/*"
+    ],
+    "plugins": [
+        "@nx"
+    ],
     "overrides": [
         {
-            "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+            "files": [
+                "*.ts",
+                "*.tsx",
+                "*.js",
+                "*.jsx"
+            ],
             "extends": [
                 "airbnb",
                 "airbnb/hooks",
@@ -21,14 +30,23 @@
                         "depConstraints": [
                             {
                                 "sourceTag": "*",
-                                "onlyDependOnLibsWithTags": ["*"]
+                                "onlyDependOnLibsWithTags": [
+                                    "*"
+                                ]
                             }
                         ]
                     }
                 ],
                 "react-hooks/rules-of-hooks": "error",
                 "react/react-in-jsx-scope": "off",
-                "react/jsx-filename-extension": ["error", { "extensions": [".tsx"] }],
+                "react/jsx-filename-extension": [
+                    "error",
+                    {
+                        "extensions": [
+                            ".tsx"
+                        ]
+                    }
+                ],
                 "import/no-named-as-default": "off",
                 "import/extensions": [
                     "error",
@@ -42,23 +60,44 @@
                 ],
                 "import/prefer-default-export": "off",
                 "react/jsx-props-no-spreading": "off",
-                "lines-between-class-members": "off",
+                "lines-between-class-members": [
+                    "error",
+                    "always",
+                    {
+                        "exceptAfterSingleLine": true
+                    }
+                ],
                 "max-classes-per-file": "off",
                 "consistent-return": "off"
             }
         },
         {
-            "files": ["*.ts", "*.tsx"],
-            "extends": ["plugin:@nx/typescript"],
+            "files": [
+                "*.ts",
+                "*.tsx"
+            ],
+            "extends": [
+                "plugin:@nx/typescript"
+            ],
             "rules": {}
         },
         {
-            "files": ["*.js", "*.jsx"],
-            "extends": ["plugin:@nx/javascript"],
+            "files": [
+                "*.js",
+                "*.jsx"
+            ],
+            "extends": [
+                "plugin:@nx/javascript"
+            ],
             "rules": {}
         },
         {
-            "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
+            "files": [
+                "*.spec.ts",
+                "*.spec.tsx",
+                "*.spec.js",
+                "*.spec.jsx"
+            ],
             "env": {
                 "jest": true
             },
