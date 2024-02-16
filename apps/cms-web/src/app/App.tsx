@@ -1,22 +1,22 @@
-import { User } from '@cms/model'
-import { Button, UserService } from '@cms/ui'
+import { UserOut } from '@cms/model'
+import { Button, UserClient } from '@cms/ui'
 import { IconCirclePlus } from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
 import UserDetails from '../components/user-details/user-details'
 import styles from './App.module.scss'
 
 export function App() {
-    const [users, setUsers] = useState<User[]>([])
+    const [users, setUsers] = useState<UserOut[]>([])
     const [newUserName, setNewUserName] = useState<string>('')
 
     useEffect(() => {
-        UserService.getUsers().then((usersData) => {
+        UserClient.getUsers().then((usersData) => {
             setUsers(usersData)
         })
     }, [])
 
     const addNewUser = () => {
-        UserService.addUser(newUserName).then((usersData) => {
+        UserClient.addUser(newUserName).then((usersData) => {
             setUsers(usersData)
             setNewUserName('')
         })

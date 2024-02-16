@@ -5,10 +5,13 @@ import { StatusCodes } from 'http-status-codes'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type TypedRequest<T> = Request<{ [key: string]: string }, any, T>
 export type TypedResponse<T> = Response<T>
+export type SchemaError = {
+    prop: string
+    errors?: Record<string, string>
+    children: SchemaError[]
+}
 
-const getValidationErrors = (
-    errors?: ValidationError[],
-): { prop: string; errors?: Record<string, string> }[] =>
+const getValidationErrors = (errors?: ValidationError[]): SchemaError[] =>
     errors?.map((error) => ({
         prop: error.property,
         errors: error.constraints,

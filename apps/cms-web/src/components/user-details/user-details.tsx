@@ -1,9 +1,9 @@
 import { DateUtils } from '@cms-utils'
-import { User } from '@cms/model'
+import { UserOut } from '@cms/model'
 import styles from './user-details.module.scss'
 
 export interface UserDetailsProps {
-    user: User
+    user: UserOut
 }
 
 export function UserDetails({ user }: UserDetailsProps) {
