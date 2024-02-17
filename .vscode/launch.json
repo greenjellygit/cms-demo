@@ -18,7 +18,7 @@
             "runtimeArgs": ["serve", "cms-api"],
             "console": "integratedTerminal",
             "outFiles": ["${workspaceFolder}/**/*.js", "!**/node_modules/**"],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}/apps/cms-api"
         }
     ]
 }

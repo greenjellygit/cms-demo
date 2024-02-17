@@ -1,9 +1,11 @@
+import { HttpStatusCode } from 'axios'
 import { ValidationError, validateOrReject } from 'class-validator'
 import { NextFunction, Request, Response } from 'express'
-import { StatusCodes } from 'http-status-codes'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type TypedRequest<T> = Request<{ [key: string]: string }, any, T>
+type ValidationSchema = { new (): any }
+
+export type TypedRequest<T> = Request<{ [key: string]: string }, unknown, T>
 export type TypedResponse<T> = Response<T>
 export type SchemaError = {
     prop: string
@@ -18,9 +20,6 @@ const getValidationErrors = (errors?: ValidationError[]): SchemaError[] =>
         children: getValidationErrors(error.children),
     })) || []
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ValidationSchema = { new (): any }
-
 export const validate =
     (Schema: ValidationSchema) => async (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -29,6 +28,6 @@ export const validate =
             next()
         } catch (e) {
             const errors = getValidationErrors(e as ValidationError[])
-            res.status(StatusCodes.PRECONDITION_FAILED).send(errors)
+            res.status(HttpStatusCode.PreconditionFailed).send(errors)
         }
     }

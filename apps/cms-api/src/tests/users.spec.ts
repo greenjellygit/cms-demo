@@ -1,5 +1,5 @@
 import { UserCreate, UserOut } from '@cms/model'
-import { StatusCodes } from 'http-status-codes'
+import { HttpStatusCode } from 'axios'
 import request from 'supertest'
 import { SchemaError } from '../core/request.validator'
 import { app, server, untilAppReady } from './test-app'
@@ -15,14 +15,14 @@ afterAll(() => {
 describe('/users', () => {
     it('should get users (empty)', async () => {
         const response = await request(app).get('/api/users')
-        expect(response.statusCode).toBe(StatusCodes.OK)
+        expect(response.statusCode).toBe(HttpStatusCode.Ok)
         expect(response.body).toStrictEqual([])
     })
     it('should create user', async () => {
         const response = await request(app)
             .post('/api/users')
             .send({ userName: 'John' } as UserCreate)
-        expect(response.statusCode).toBe(StatusCodes.OK)
+        expect(response.statusCode).toBe(HttpStatusCode.Ok)
         expect(response.body).not.toBeNull()
 
         const user: UserOut = response.body[0]
@@ -30,11 +30,17 @@ describe('/users', () => {
         expect(user.name).toEqual('John')
         expect(user.registrationDate).not.toBeNull()
     })
+    it('should return internal server error', async () => {
+        const response = await request(app)
+            .post('/api/users')
+            .send({ userName: 'John' } as UserCreate)
+        expect(response.statusCode).toBe(HttpStatusCode.InternalServerError)
+    })
     it('should validate user', async () => {
         const response = await request(app)
             .post('/api/users')
             .send({ userName: 'jo' } as UserCreate)
-        expect(response.statusCode).toBe(StatusCodes.PRECONDITION_FAILED)
+        expect(response.statusCode).toBe(HttpStatusCode.PreconditionFailed)
         expect(response.body).toEqual<[SchemaError]>([
             {
                 prop: 'userName',
@@ -45,7 +51,7 @@ describe('/users', () => {
     })
     it('should get users (not empty)', async () => {
         const response = await request(app).get('/api/users')
-        expect(response.statusCode).toBe(StatusCodes.OK)
+        expect(response.statusCode).toBe(HttpStatusCode.Ok)
         expect(response.body).not.toBeNull()
 
         const user: UserOut = response.body[0]
