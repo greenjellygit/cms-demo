@@ -1,5 +1,7 @@
 import { HttpStatusCode } from 'axios'
 import { ValidationError, validateOrReject } from 'class-validator'
+
+// eslint-disable-next-line no-restricted-imports
 import { NextFunction, Request, Response } from 'express'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -13,12 +15,15 @@ export type SchemaError = {
     children: SchemaError[]
 }
 
-const getValidationErrors = (errors?: ValidationError[]): SchemaError[] =>
-    errors?.map((error) => ({
-        prop: error.property,
-        errors: error.constraints,
-        children: getValidationErrors(error.children),
-    })) || []
+function getValidationErrors(errors?: ValidationError[]): SchemaError[] {
+    return (
+        errors?.map((error) => ({
+            prop: error.property,
+            errors: error.constraints,
+            children: getValidationErrors(error.children),
+        })) || []
+    )
+}
 
 export const validate =
     (Schema: ValidationSchema) => async (req: Request, res: Response, next: NextFunction) => {

@@ -1,14 +1,14 @@
-import { User } from '@cms/model'
+import { UserOut } from '@cms/model'
 import { queryByAttribute, render } from '@testing-library/react'
 
 import UserDetails from './user-details'
 
 describe('WelcomeText', () => {
     it('should display a provided user data', () => {
-        const user: User = {
+        const user: UserOut = {
             id: 1,
-            name: 'John',
-            registrationDate: new Date(),
+            login: 'John',
+            createdAt: new Date(),
         }
         const getById = queryByAttribute.bind(null, 'id')
         const dom = render(<UserDetails user={user} />)

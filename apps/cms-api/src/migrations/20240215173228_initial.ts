@@ -12,6 +12,7 @@ export class Migration_20240215173228_initial extends MigrationFacade {
             }),
         )
     }
+
     async down(): Promise<void> {
         this.run(this.schema.dropTable('users'))
     }

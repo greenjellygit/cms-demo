@@ -15,5 +15,5 @@ export function mapToDto<T, V>(
     plain: V | V[],
     options?: ClassTransformOptions,
 ): T | T[] {
-    return plainToInstance(cls, plain as any, { excludeExtraneousValues: true, ...options })
+    return plainToInstance(cls, plain, { excludeExtraneousValues: true, ...options })
 }

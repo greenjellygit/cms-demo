@@ -35,7 +35,7 @@
                     }
                 ],
                 "import/no-named-as-default": "off",
-                "import/no-extraneous-dependencies": ["error", { "projectDependencies": false }],
+                "import/no-extraneous-dependencies": "off",
                 "import/extensions": [
                     "error",
                     "ignorePackages",
@@ -56,7 +56,19 @@
                     }
                 ],
                 "max-classes-per-file": "off",
-                "consistent-return": "off"
+                "consistent-return": "off",
+                "no-restricted-imports": [
+                    "error",
+                    {
+                        "paths": [
+                            {
+                                "name": "express",
+                                "importNames": ["Request", "Response"],
+                                "message": "Import TypRequest or TypResponse instead."
+                            }
+                        ]
+                    }
+                ]
             }
         },
         {

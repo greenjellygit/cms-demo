@@ -21,30 +21,30 @@ describe('/users', () => {
     it('should create user', async () => {
         const response = await request(app)
             .post('/api/users')
-            .send({ userName: 'John' } as UserCreate)
+            .send({ login: 'John' } as UserCreate)
         expect(response.statusCode).toBe(HttpStatusCode.Ok)
         expect(response.body).not.toBeNull()
 
         const user: UserOut = response.body[0]
         expect(user.id).not.toBeNull()
-        expect(user.name).toEqual('John')
-        expect(user.registrationDate).not.toBeNull()
+        expect(user.login).toEqual('John')
+        expect(user.createdAt).not.toBeNull()
     })
     it('should return internal server error', async () => {
         const response = await request(app)
             .post('/api/users')
-            .send({ userName: 'John' } as UserCreate)
+            .send({ login: 'John' } as UserCreate)
         expect(response.statusCode).toBe(HttpStatusCode.InternalServerError)
     })
     it('should validate user', async () => {
         const response = await request(app)
             .post('/api/users')
-            .send({ userName: 'jo' } as UserCreate)
+            .send({ login: 'jo' } as UserCreate)
         expect(response.statusCode).toBe(HttpStatusCode.PreconditionFailed)
         expect(response.body).toEqual<[SchemaError]>([
             {
-                prop: 'userName',
-                errors: { isLength: 'userName must be longer than or equal to 3 characters' },
+                prop: 'login',
+                errors: { isLength: 'login must be longer than or equal to 3 characters' },
                 children: [],
             },
         ])
@@ -56,7 +56,7 @@ describe('/users', () => {
 
         const user: UserOut = response.body[0]
         expect(user.id).not.toBeNull()
-        expect(user.name).toEqual('John')
-        expect(user.registrationDate).not.toBeNull()
+        expect(user.login).toEqual('John')
+        expect(user.createdAt).not.toBeNull()
     })
 })
