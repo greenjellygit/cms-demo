@@ -1,13 +1,14 @@
+import { Expose } from 'class-transformer'
 import { IsNotEmpty, Length } from 'class-validator'
 
 export class UserCreate {
     @Length(3, 10)
     @IsNotEmpty()
-    userName: string
+    login: string
 }
 
 export class UserOut {
-    id: number
-    name: string
-    registrationDate: Date
+    @Expose() id: number
+    @Expose() login: string
+    @Expose() createdAt: Date
 }

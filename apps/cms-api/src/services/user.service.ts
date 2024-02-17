@@ -8,7 +8,7 @@ export function getUsers(): Promise<UserEntity[]> {
 
 export async function createUser(userCreate: UserCreate): Promise<UserEntity[]> {
     DB.users.create({
-        login: userCreate.userName,
+        login: userCreate.login,
     })
     await DB.em.flush()
     return DB.users.findAll()

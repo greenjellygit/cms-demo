@@ -5,8 +5,8 @@ import { NextFunction, Request, Response } from 'express'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ValidationSchema = { new (): any }
 
-export type TypedRequest<T> = Request<{ [key: string]: string }, unknown, T>
-export type TypedResponse<T> = Response<T>
+export type TypRequest<T> = Request<{ [key: string]: string }, unknown, T>
+export type TypResponse<T> = Response<T>
 export type SchemaError = {
     prop: string
     errors?: Record<string, string>

@@ -16,7 +16,7 @@ export function App() {
     }, [])
 
     const addNewUser = () => {
-        UserClient.addUser(newUserName).then((usersData) => {
+        UserClient.addUser({ login: newUserName }).then((usersData) => {
             setUsers(usersData)
             setNewUserName('')
         })

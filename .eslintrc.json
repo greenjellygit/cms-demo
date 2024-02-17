@@ -1,19 +1,10 @@
 {
     "root": true,
-    "ignorePatterns": [
-        "**/*"
-    ],
-    "plugins": [
-        "@nx"
-    ],
+    "ignorePatterns": ["**/*"],
+    "plugins": ["@nx"],
     "overrides": [
         {
-            "files": [
-                "*.ts",
-                "*.tsx",
-                "*.js",
-                "*.jsx"
-            ],
+            "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
             "extends": [
                 "airbnb",
                 "airbnb/hooks",
@@ -30,9 +21,7 @@
                         "depConstraints": [
                             {
                                 "sourceTag": "*",
-                                "onlyDependOnLibsWithTags": [
-                                    "*"
-                                ]
+                                "onlyDependOnLibsWithTags": ["*"]
                             }
                         ]
                     }
@@ -42,12 +31,11 @@
                 "react/jsx-filename-extension": [
                     "error",
                     {
-                        "extensions": [
-                            ".tsx"
-                        ]
+                        "extensions": [".tsx"]
                     }
                 ],
                 "import/no-named-as-default": "off",
+                "import/no-extraneous-dependencies": ["error", { "projectDependencies": false }],
                 "import/extensions": [
                     "error",
                     "ignorePackages",
@@ -72,32 +60,17 @@
             }
         },
         {
-            "files": [
-                "*.ts",
-                "*.tsx"
-            ],
-            "extends": [
-                "plugin:@nx/typescript"
-            ],
+            "files": ["*.ts", "*.tsx"],
+            "extends": ["plugin:@nx/typescript"],
             "rules": {}
         },
         {
-            "files": [
-                "*.js",
-                "*.jsx"
-            ],
-            "extends": [
-                "plugin:@nx/javascript"
-            ],
+            "files": ["*.js", "*.jsx"],
+            "extends": ["plugin:@nx/javascript"],
             "rules": {}
         },
         {
-            "files": [
-                "*.spec.ts",
-                "*.spec.tsx",
-                "*.spec.js",
-                "*.spec.jsx"
-            ],
+            "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
             "env": {
                 "jest": true
             },
