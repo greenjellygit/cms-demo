@@ -28,5 +28,5 @@
             "options": { "command": "npx mikro-orm migration:down", "cwd": "./apps/cms-api" }
         }
     },
-    "tags": []
+    "tags": ["@cms-api"]
 }

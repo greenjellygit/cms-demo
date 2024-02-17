@@ -20,8 +20,29 @@
                         "allow": [],
                         "depConstraints": [
                             {
-                                "sourceTag": "*",
-                                "onlyDependOnLibsWithTags": ["*"]
+                                "sourceTag": "@cms-utils",
+                                "onlyDependOnLibsWithTags": ["@cms-utils"]
+                            },
+                            {
+                                "sourceTag": "@cms-model",
+                                "onlyDependOnLibsWithTags": ["@cms-model", "@cms-utils"]
+                            },
+                            {
+                                "sourceTag": "@cms-ui",
+                                "onlyDependOnLibsWithTags": ["@cms-ui", "@cms-utils", "@cms-model"]
+                            },
+                            {
+                                "sourceTag": "@cms-web",
+                                "onlyDependOnLibsWithTags": [
+                                    "@cms-web",
+                                    "@cms-utils",
+                                    "@cms-model",
+                                    "@cms-ui"
+                                ]
+                            },
+                            {
+                                "sourceTag": "@cms-api",
+                                "onlyDependOnLibsWithTags": ["@cms-api", "@cms-utils", "@cms-model"]
                             }
                         ]
                     }
