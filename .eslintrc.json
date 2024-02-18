@@ -89,7 +89,9 @@
                             }
                         ]
                     }
-                ]
+                ],
+                "class-methods-use-this": ["off"],
+                "no-new": ["off"]
             }
         },
         {

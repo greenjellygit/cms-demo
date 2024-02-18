@@ -18,7 +18,9 @@ const formatter = format.combine(
     format.label({ label: '[LOG]' }),
     format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
     format.simple(),
-    format.printf((info) => `${info.label} ${info.timestamp} ${info.level}: ${info.message}`),
+    format.printf((info) => {
+        return `${info.label} ${info.timestamp} ${info.level}: ${info.message}`
+    }),
 )
 
 export const httpLogger = expressWinston.logger({

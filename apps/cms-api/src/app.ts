@@ -7,11 +7,13 @@ import 'express-async-errors'
 import { initDb } from './config/db.config'
 import { globalErrorHandler, httpLogger, logger } from './config/logger.config'
 import { routers } from './routers'
+import { startSchedulers } from './scheduler'
 
 export function startApp(dbConfig: Options) {
     const app = express()
 
     const DB = initDb(dbConfig)
+    startSchedulers()
 
     app.use((_req, _res, next) => RequestContext.create(DB.orm.em, next))
     app.use(cors())
