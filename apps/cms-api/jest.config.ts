@@ -10,4 +10,7 @@ export default {
     coverageDirectory: '../../coverage/apps/cms-api',
     detectOpenHandles: true,
     forceExit: true,
+    globalSetup: '<rootDir>/src/tests/config/global-start.config.ts',
+    globalTeardown: '<rootDir>/src/tests/config/global-stop.config.ts',
+    rootDir: './',
 }

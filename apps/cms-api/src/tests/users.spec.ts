@@ -1,25 +1,17 @@
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { UserCreate, UserOut } from '@cms/model'
 import { HttpStatusCode } from 'axios'
 import request from 'supertest'
 import { SchemaError } from '../core/request.validator'
-import { app, server, untilAppReady } from './test-app'
-
-beforeAll(async () => {
-    await untilAppReady(server)
-})
-
-afterAll(() => {
-    server.close()
-})
 
 describe('/users', () => {
     it('should get users (empty)', async () => {
-        const response = await request(app).get('/api/users')
+        const response = await request(global.app).get('/api/users')
         expect(response.statusCode).toBe(HttpStatusCode.Ok)
         expect(response.body).toStrictEqual([])
     })
     it('should create user', async () => {
-        const response = await request(app)
+        const response = await request(global.app)
             .post('/api/users')
             .send({ login: 'John' } as UserCreate)
         expect(response.statusCode).toBe(HttpStatusCode.Ok)
@@ -31,13 +23,13 @@ describe('/users', () => {
         expect(user.createdAt).not.toBeNull()
     })
     it('should return internal server error', async () => {
-        const response = await request(app)
+        const response = await request(global.app)
             .post('/api/users')
             .send({ login: 'John' } as UserCreate)
         expect(response.statusCode).toBe(HttpStatusCode.InternalServerError)
     })
     it('should validate user', async () => {
-        const response = await request(app)
+        const response = await request(global.app)
             .post('/api/users')
             .send({ login: 'jo' } as UserCreate)
         expect(response.statusCode).toBe(HttpStatusCode.PreconditionFailed)
@@ -50,7 +42,7 @@ describe('/users', () => {
         ])
     })
     it('should get users (not empty)', async () => {
-        const response = await request(app).get('/api/users')
+        const response = await request(global.app).get('/api/users')
         expect(response.statusCode).toBe(HttpStatusCode.Ok)
         expect(response.body).not.toBeNull()
 

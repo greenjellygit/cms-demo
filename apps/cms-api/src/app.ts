@@ -4,8 +4,8 @@ import express from 'express'
 import * as path from 'path'
 // eslint-disable-next-line
 import 'express-async-errors'
-import { initDb } from './db.config'
-import { globalErrorHandler, httpLogger, logger } from './logger.config'
+import { initDb } from './config/db.config'
+import { globalErrorHandler, httpLogger, logger } from './config/logger.config'
 import { routers } from './routers'
 
 export function startApp(dbConfig: Options) {

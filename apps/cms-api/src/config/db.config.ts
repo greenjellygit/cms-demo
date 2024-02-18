@@ -2,11 +2,13 @@ import { EntityManager, EntityRepository, MikroORM, Options } from '@mikro-orm/c
 import { Migrator, TSMigrationGenerator } from '@mikro-orm/migrations'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import http from 'http'
-import { UserEntity } from './entities/user.entity'
+import { UserEntity } from '../entities/user.entity'
+import { logger } from './logger.config'
 
 export const defaultDbConfig: Options = {
     dbName: 'cms_demo_db',
     entities: [UserEntity],
+    logger: (msg) => logger.info(msg),
     forceUtcTimezone: true,
     extensions: [Migrator],
     migrations: {

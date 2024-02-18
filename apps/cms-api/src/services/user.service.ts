@@ -1,5 +1,5 @@
 import { UserCreate } from '@cms/model'
-import { DB } from '../db.config'
+import { DB } from '../config/db.config'
 import { UserEntity } from '../entities/user.entity'
 
 export function getUsers(): Promise<UserEntity[]> {

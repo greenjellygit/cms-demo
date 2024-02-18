@@ -1,4 +1,4 @@
 import { startApp } from './app'
-import mySqlConfig from './db.config'
+import mySqlConfig from './config/db.config'
 
 export const { app, server } = startApp(mySqlConfig)

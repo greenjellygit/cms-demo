@@ -16,7 +16,7 @@ const formatter = format.combine(
     errorStackTracerFormat(),
     format.colorize({ all: true }),
     format.label({ label: '[LOG]' }),
-    format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+    format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
     format.simple(),
     format.printf((info) => `${info.label} ${info.timestamp} ${info.level}: ${info.message}`),
 )

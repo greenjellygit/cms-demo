@@ -27,8 +27,8 @@
         "@types/cors": "^2.8.17",
         "@types/date-fns": "^2.6.0",
         "@types/express-winston": "^4.0.0",
-        "@types/jest": "^29.4.0",
-        "@types/node": "18.16.9",
+        "@types/jest": "^29.5.12",
+        "@types/node": "^18.16.9",
         "@types/react": "18.2.33",
         "@types/react-dom": "18.2.14",
         "@types/supertest": "^6.0.2",
@@ -75,13 +75,14 @@
         "react-dom": "18.2.0",
         "request": "^2.88.2",
         "supertest": "^6.3.4",
+        "tsconfig-paths": "^4.2.0",
         "tslib": "^2.3.0",
         "winston": "^3.11.0"
     },
     "mikro-orm": {
         "useTsNode": true,
         "configPaths": [
-            "./src/db.config.ts"
+            "./src/config/db.config.ts"
         ]
     }
 }
