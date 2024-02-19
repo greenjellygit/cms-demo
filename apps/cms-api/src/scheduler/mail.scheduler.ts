@@ -1,9 +1,19 @@
 import { logger } from '../config/logger.config'
-import { Schedule } from '../core/scheduler.utils'
+import { Job, Scheduler } from '../core/scheduler.utils'
 
+@Scheduler()
 export default class MailScheduler {
-    @Schedule('* * * * * *')
-    public resendEmails() {
-        logger.info('Sending emails...')
+    @Job('* * * * * *')
+    public task1(): void {
+        logger.info('Running task 1')
+    }
+
+    @Job('0 * * * *')
+    public task2(): void {
+        logger.info('Running task 2')
+    }
+
+    public notAJob(): void {
+        logger.info('Not a task')
     }
 }

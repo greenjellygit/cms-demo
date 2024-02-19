@@ -19,6 +19,16 @@
             "console": "integratedTerminal",
             "outFiles": ["${workspaceFolder}/**/*.js", "!**/node_modules/**"],
             "cwd": "${workspaceFolder}/apps/cms-api"
+        },
+        {
+            "name": "Start cms-api tests",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "nx",
+            "runtimeArgs": ["run", "cms-api:test"],
+            "console": "integratedTerminal",
+            "outFiles": ["${workspaceFolder}/**/*.js", "!**/node_modules/**"],
+            "cwd": "${workspaceFolder}/apps/cms-api"
         }
     ]
 }

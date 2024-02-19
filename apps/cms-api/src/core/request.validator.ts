@@ -15,7 +15,7 @@ export type SchemaError = {
     children: SchemaError[]
 }
 
-function getValidationErrors(errors?: ValidationError[]): SchemaError[] {
+export function getValidationErrors(errors?: ValidationError[]): SchemaError[] {
     return (
         errors?.map((error) => ({
             prop: error.property,

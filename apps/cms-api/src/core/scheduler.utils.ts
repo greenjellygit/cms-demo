@@ -1,12 +1,45 @@
 import cron from 'node-cron'
+import 'reflect-metadata'
 import { logger } from '../config/logger.config'
+import { settings } from '../config/settings'
 
-export function Schedule(cronExpression: string) {
-    return (target: any, jobName: string, descriptor: PropertyDescriptor) => {
-        const schedulerName = target.constructor.name
-        cron.schedule(cronExpression, () => {
-            logger.info(`[${schedulerName}] ${jobName} - started`)
-            descriptor.value()
-        })
+export const onInstanceCreation =
+    (callback: (constr: any) => void) =>
+    <T extends { new (...args: any[]): any }>(constr: T) =>
+        class extends constr {
+            constructor(...args: any[]) {
+                super(...args)
+                callback(constr)
+            }
+        }
+
+export function Job(cronExpression: string) {
+    return (target: object, propertyKey: string) => {
+        Reflect.defineMetadata('job', { cronExpression }, target, propertyKey)
     }
+}
+
+export function Scheduler() {
+    return onInstanceCreation((constr) => {
+        const cronDefinitions = Reflect.ownKeys(constr.prototype)
+            .filter((propertyKey) => Reflect.hasMetadata('job', constr.prototype, propertyKey))
+            .map((propertyKey) => {
+                const metadata = Reflect.getMetadata('job', constr.prototype, propertyKey)
+                return {
+                    cronExpression: metadata.cronExpression,
+                    cronJob: constr.prototype[propertyKey],
+                    cronName: propertyKey as string,
+                }
+            })
+
+        if (settings.enableScheduler) {
+            const schedulerName = constr.name
+            cronDefinitions.forEach(({ cronExpression, cronJob, cronName }) => {
+                cron.schedule(cronExpression, () => {
+                    logger.info(`[${schedulerName}] ${cronName} - started`)
+                    cronJob()
+                })
+            })
+        }
+    })
 }

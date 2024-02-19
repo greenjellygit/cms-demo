@@ -26,6 +26,28 @@
         "migrate-down": {
             "executor": "nx:run-commands",
             "options": { "command": "npx mikro-orm migration:down", "cwd": "./apps/cms-api" }
+        },
+        "test-unit": {
+            "executor": "nx:run-commands",
+            "inputs": [{ "externalDependencies": ["jest"] }],
+            "options": {
+                "cwd": "./apps/cms-api",
+                "command": "jest --config=./jest.config.ts --testPathIgnorePatterns='.*/e2e-tests/.*'"
+            }
+        },
+        "test-e2e": {
+            "executor": "nx:run-commands",
+            "inputs": [{ "externalDependencies": ["jest"] }],
+            "options": {
+                "cwd": "./apps/cms-api",
+                "command": "jest --config=./src/e2e-tests/jest.config.ts ./src/e2e-tests/"
+            }
+        },
+        "test": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "nx run cms-api:test-unit & nx run cms-api:test-e2e"
+            }
         }
     },
     "tags": ["@cms-api"]

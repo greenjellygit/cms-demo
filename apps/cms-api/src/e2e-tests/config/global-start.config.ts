@@ -42,7 +42,7 @@ export const untilAppReady = (server: Server): Promise<void> =>
     })
 
 export default async () => {
-    const { app, server } = startApp(sqliteConfig)
+    const { app, server } = startApp({ dbConfig: sqliteConfig, envFile: '../../../.env.test' })
     await untilAppReady(server)
     global.app = app
     global.server = server

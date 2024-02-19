@@ -10,6 +10,6 @@
         "src/**/*.test.ts",
         "src/**/*.spec.ts",
         "src/**/*.d.ts",
-        "src/tests/config/*.ts"
+        "src/e2e-tests/config/*.ts"
     ]
 }
