@@ -1,7 +1,7 @@
 import { HttpStatusCode } from 'axios'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import { logger } from '../config/logger.config'
-import { settings } from '../config/settings'
+import { getSettings } from '../config/settings'
 import { HttpException } from '../core/http.exception'
 
 export interface TokenData {
@@ -9,6 +9,7 @@ export interface TokenData {
 }
 
 export function createAccessToken(data: TokenData): string {
+    const settings = getSettings()
     return jwt.sign(data, settings.jwtSecret, { expiresIn: settings.jwtExpireTime })
 }
 
@@ -18,7 +19,7 @@ export function verifyToken(token: string): TokenData {
         message: 'Could not validate credentials',
     })
     try {
-        const decoded = jwt.verify(token, settings.jwtSecret) as JwtPayload
+        const decoded = jwt.verify(token, getSettings().jwtSecret) as JwtPayload
         if (decoded?.userId) {
             return { userId: decoded?.userId }
         }

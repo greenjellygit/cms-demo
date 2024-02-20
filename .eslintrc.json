@@ -91,7 +91,9 @@
                     }
                 ],
                 "class-methods-use-this": ["off"],
-                "no-new": ["off"]
+                "no-new": ["off"],
+                "no-shadow": "off",
+                "@typescript-eslint/no-shadow": ["error"]
             }
         },
         {
