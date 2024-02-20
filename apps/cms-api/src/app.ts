@@ -1,6 +1,6 @@
 import { Options, RequestContext } from '@mikro-orm/core'
 import cors from 'cors'
-import express from 'express'
+import express, { Router } from 'express'
 import * as path from 'path'
 // eslint-disable-next-line
 import 'express-async-errors'
@@ -10,9 +10,13 @@ import { loadSettings } from './config/settings'
 import { routers } from './routers'
 import { startSchedulers } from './scheduler'
 
-type AppParams = { dbConfig: Options; envFile?: string }
+type AppParams = {
+    dbConfig: Options
+    envFile?: string
+    additionalRouters?: { prefix: string; router: Router }[]
+}
 
-export function startApp({ envFile, dbConfig }: AppParams) {
+export function startApp({ envFile, dbConfig, additionalRouters = [] }: AppParams) {
     const app = express()
 
     loadSettings(envFile)
@@ -26,6 +30,9 @@ export function startApp({ envFile, dbConfig }: AppParams) {
 
     app.use('/assets', express.static(path.join(__dirname, 'assets')))
     app.use('/api', routers)
+    additionalRouters.forEach(({ prefix, router }) => {
+        app.use(prefix, router)
+    })
 
     app.use(globalErrorHandler)
 

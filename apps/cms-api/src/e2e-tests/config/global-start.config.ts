@@ -11,6 +11,7 @@ import { Server } from 'http'
 import { startApp } from '../../app'
 import { DB, defaultDbConfig } from '../../config/db.config'
 import { logger } from '../../config/logger.config'
+import { testRouter } from './test.router'
 
 declare global {
     // eslint-disable-next-line
@@ -42,7 +43,11 @@ export const untilAppReady = (server: Server): Promise<void> =>
     })
 
 export default async () => {
-    const { app, server } = startApp({ dbConfig: sqliteConfig, envFile: '../../../.env.test' })
+    const { app, server } = startApp({
+        dbConfig: sqliteConfig,
+        envFile: '../../../.env.test',
+        additionalRouters: [{ prefix: '/test', router: testRouter }],
+    })
     await untilAppReady(server)
     global.app = app
     global.server = server
