@@ -1,16 +1,16 @@
 import { HttpStatusCode } from 'axios'
 import { addHours, differenceInMinutes } from 'date-fns'
-import * as settings from '../config/settings'
-import { Settings } from '../config/settings'
-import { HttpException } from '../core/http.exception'
+import * as appConfig from '../config/app.config'
+import { AppConfig } from '../config/app.config'
+import { HttpException } from '../exceptions/http.exception'
 import * as jwtService from './jwt.service'
 
 beforeAll(() => {
-    const getSettingsMock = jest.spyOn(settings, 'getSettings')
+    const getSettingsMock = jest.spyOn(appConfig, 'getAppConfig')
     getSettingsMock.mockReturnValue({
         jwtExpireTime: 10800, // 3 hours
         jwtSecret: 'hello world of secrets',
-    } as Settings)
+    } as AppConfig)
 })
 
 describe('jwt.service', () => {

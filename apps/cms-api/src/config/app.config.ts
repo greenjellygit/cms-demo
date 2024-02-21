@@ -4,7 +4,7 @@ import dotnev from 'dotenv'
 import 'reflect-metadata'
 import { Boolean, mapToDto } from '../core/mapper.utils'
 
-export class Settings {
+export class AppConfig {
     @Boolean()
     @Expose({ name: 'ENABLE_SCHEDULER' })
     enableScheduler: boolean
@@ -27,26 +27,26 @@ export class Settings {
     dbPass: string
 }
 
-interface Config {
+interface LoadedAppConfig {
     path: string
-    settings: Settings
+    settings: AppConfig
 }
 
-const config: Config = {
+const config: LoadedAppConfig = {
     path: '',
-    settings: {},
-} as Config
+    settings: {} as AppConfig,
+}
 
 export enum EnvFile {
     ENV = '.env',
     TEST_ENV = '.env.test',
 }
 
-export const getSettings = (envFile: EnvFile = EnvFile.ENV): Settings => {
+export const getAppConfig = (envFile: EnvFile = EnvFile.ENV): AppConfig => {
     if (config.path !== envFile) {
         config.path = envFile
         config.settings = mapToDto(
-            Settings,
+            AppConfig,
             dotnev.config({ path: envFile, override: true, debug: true }).parsed,
         )
     }

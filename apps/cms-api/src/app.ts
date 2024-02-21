@@ -4,9 +4,10 @@ import express, { Router } from 'express'
 import * as path from 'path'
 // eslint-disable-next-line
 import 'express-async-errors'
+import { EnvFile, getAppConfig } from './config/app.config'
 import { initDb } from './config/db.config'
-import { globalErrorHandler, httpLogger, logger } from './config/logger.config'
-import { EnvFile, getSettings } from './config/settings'
+import { httpLogger, logger } from './config/logger.config'
+import { globalErrorHandler } from './exceptions/exception.handler'
 import { routers } from './routers'
 import { startSchedulers } from './scheduler'
 
@@ -19,7 +20,7 @@ type AppParams = {
 export function startApp({ envFile, dbConfig, additionalRouters = [] }: AppParams) {
     const app = express()
 
-    getSettings(envFile)
+    getAppConfig(envFile)
     const DB = initDb(dbConfig)
     startSchedulers()
 
