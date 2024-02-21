@@ -1,6 +1,6 @@
 import { HttpStatusCode } from 'axios'
 import { Router } from 'express'
-import { HttpException } from '../../core/http.exception'
+import { HttpException } from '../../exceptions/http.exception'
 
 export const testRouter = Router()
 

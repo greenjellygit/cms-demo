@@ -9,9 +9,9 @@ import { SqliteDriver } from '@mikro-orm/sqlite'
 import express from 'express'
 import { Server } from 'http'
 import { startApp } from '../../app'
+import { EnvFile } from '../../config/app.config'
 import { DB, defaultDbConfig } from '../../config/db.config'
 import { logger } from '../../config/logger.config'
-import { EnvFile } from '../../config/settings'
 import { testRouter } from './test.router'
 
 declare global {

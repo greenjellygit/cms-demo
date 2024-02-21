@@ -3,8 +3,8 @@ import { Migrator, TSMigrationGenerator } from '@mikro-orm/migrations'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import http from 'http'
 import { UserEntity } from '../entities/user.entity'
+import { getAppConfig } from './app.config'
 import { logger } from './logger.config'
-import { getSettings } from './settings'
 
 export const defaultDbConfig: Options = {
     dbName: 'cms_demo_db',
@@ -29,11 +29,11 @@ export const defaultDbConfig: Options = {
     },
 }
 
-const settings = getSettings()
+const config = getAppConfig()
 const mySqlConfig: Options = {
-    clientUrl: `jdbc:mysql://${settings.dbPath}`,
-    user: settings.dbUser,
-    password: settings.dbPass,
+    clientUrl: `jdbc:mysql://${config.dbPath}`,
+    user: config.dbUser,
+    password: config.dbPass,
     driver: MySqlDriver,
     ...defaultDbConfig,
 }
