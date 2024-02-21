@@ -11,6 +11,7 @@ import { Server } from 'http'
 import { startApp } from '../../app'
 import { DB, defaultDbConfig } from '../../config/db.config'
 import { logger } from '../../config/logger.config'
+import { EnvFile } from '../../config/settings'
 import { testRouter } from './test.router'
 
 declare global {
@@ -45,7 +46,7 @@ export const untilAppReady = (server: Server): Promise<void> =>
 export default async () => {
     const { app, server } = startApp({
         dbConfig: sqliteConfig,
-        envFile: '../../../.env.test',
+        envFile: EnvFile.TEST_ENV,
         additionalRouters: [{ prefix: '/test', router: testRouter }],
     })
     await untilAppReady(server)

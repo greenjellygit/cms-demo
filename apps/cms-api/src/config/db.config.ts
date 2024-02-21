@@ -4,6 +4,7 @@ import { MySqlDriver } from '@mikro-orm/mysql'
 import http from 'http'
 import { UserEntity } from '../entities/user.entity'
 import { logger } from './logger.config'
+import { getSettings } from './settings'
 
 export const defaultDbConfig: Options = {
     dbName: 'cms_demo_db',
@@ -28,10 +29,11 @@ export const defaultDbConfig: Options = {
     },
 }
 
+const settings = getSettings()
 const mySqlConfig: Options = {
-    clientUrl: 'jdbc:mysql://localhost:3306',
-    user: 'root',
-    password: 'root',
+    clientUrl: `jdbc:mysql://${settings.dbPath}`,
+    user: settings.dbUser,
+    password: settings.dbPass,
     driver: MySqlDriver,
     ...defaultDbConfig,
 }

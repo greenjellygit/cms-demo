@@ -16,17 +16,39 @@ export class Settings {
     @IsNumber()
     @Expose({ name: 'JWT_EXPIRE_TIME' })
     jwtExpireTime: number
+
+    @Expose({ name: 'DB_PATH' })
+    dbPath: string
+
+    @Expose({ name: 'DB_USER' })
+    dbUser: string
+
+    @Expose({ name: 'DB_PASS' })
+    dbPass: string
 }
 
-export const settings: Settings = {} as Settings
+interface Config {
+    path: string
+    settings: Settings
+}
 
-export const loadSettings = (path?: string): void => {
-    Object.keys(settings).forEach((key) => delete (settings as any)[key])
-    const loadedConfig = mapToDto(
-        Settings,
-        path
-            ? dotnev.config({ path, override: true, debug: true }).parsed
-            : dotnev.config({ debug: true, override: true }).parsed,
-    )
-    Object.assign(settings, loadedConfig)
+const config: Config = {
+    path: '',
+    settings: {},
+} as Config
+
+export enum EnvFile {
+    ENV = '.env',
+    TEST_ENV = '.env.test',
+}
+
+export const getSettings = (envFile: EnvFile = EnvFile.ENV): Settings => {
+    if (config.path !== envFile) {
+        config.path = envFile
+        config.settings = mapToDto(
+            Settings,
+            dotnev.config({ path: envFile, override: true, debug: true }).parsed,
+        )
+    }
+    return config.settings
 }

@@ -6,20 +6,20 @@ import * as path from 'path'
 import 'express-async-errors'
 import { initDb } from './config/db.config'
 import { globalErrorHandler, httpLogger, logger } from './config/logger.config'
-import { loadSettings } from './config/settings'
+import { EnvFile, getSettings } from './config/settings'
 import { routers } from './routers'
 import { startSchedulers } from './scheduler'
 
 type AppParams = {
     dbConfig: Options
-    envFile?: string
+    envFile?: EnvFile
     additionalRouters?: { prefix: string; router: Router }[]
 }
 
 export function startApp({ envFile, dbConfig, additionalRouters = [] }: AppParams) {
     const app = express()
 
-    loadSettings(envFile)
+    getSettings(envFile)
     const DB = initDb(dbConfig)
     startSchedulers()
 

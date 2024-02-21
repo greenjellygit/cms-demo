@@ -1,7 +1,7 @@
 import cron from 'node-cron'
 import 'reflect-metadata'
 import { logger } from '../config/logger.config'
-import { settings } from '../config/settings'
+import { getSettings } from '../config/settings'
 
 export const onInstanceCreation =
     (callback: (constr: any) => void) =>
@@ -32,7 +32,7 @@ export function Scheduler() {
                 }
             })
 
-        if (settings.enableScheduler) {
+        if (getSettings().enableScheduler) {
             const schedulerName = constr.name
             cronDefinitions.forEach(({ cronExpression, cronJob, cronName }) => {
                 cron.schedule(cronExpression, () => {
