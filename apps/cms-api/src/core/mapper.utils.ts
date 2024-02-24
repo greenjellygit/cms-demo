@@ -25,5 +25,6 @@ export function mapToDto<T, V>(
 
 export function Boolean(): PropertyDecorator {
     const mapFunction = Transform(({ value }) => [true, 'enabled', 'true'].indexOf(value) > -1)
-    return (target: any, propertyName: string | symbol): void => mapFunction(target, propertyName)
+    return (target: object, propertyName: string | symbol): void =>
+        mapFunction(target, propertyName)
 }

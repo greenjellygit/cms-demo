@@ -1,17 +1,20 @@
 import cron from 'node-cron'
 import 'reflect-metadata'
 import { getAppConfig } from '../config/app.config'
-import { logger } from '../config/logger.config'
+import { appLogger } from '../config/logger.config'
 
-export const onInstanceCreation =
-    (callback: (constr: any) => void) =>
-    <T extends { new (...args: any[]): any }>(constr: T) =>
-        class extends constr {
-            constructor(...args: any[]) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Constructor = new (...args: any[]) => any
+
+export function onInstanceCreation<TBase extends Constructor>(callback: (constr: TBase) => void) {
+    return (Base: TBase) =>
+        class extends Base {
+            constructor(...args: ConstructorParameters<Constructor>) {
                 super(...args)
-                callback(constr)
+                callback(Base)
             }
         }
+}
 
 export function Job(cronExpression: string) {
     return (target: object, propertyKey: string) => {
@@ -36,7 +39,7 @@ export function Scheduler() {
             const schedulerName = constr.name
             cronDefinitions.forEach(({ cronExpression, cronJob, cronName }) => {
                 cron.schedule(cronExpression, () => {
-                    logger.info(`[${schedulerName}] ${cronName} - started`)
+                    appLogger.info(`[${schedulerName}] ${cronName} - started`)
                     cronJob()
                 })
             })

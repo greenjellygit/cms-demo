@@ -4,12 +4,12 @@ import { MySqlDriver } from '@mikro-orm/mysql'
 import http from 'http'
 import { UserEntity } from '../entities/user.entity'
 import { getAppConfig } from './app.config'
-import { logger } from './logger.config'
+import { appLogger } from './logger.config'
 
 export const defaultDbConfig: Options = {
     dbName: 'cms_demo_db',
     entities: [UserEntity],
-    logger: (msg) => logger.info(msg),
+    logger: (msg) => appLogger.info(msg),
     forceUtcTimezone: true,
     extensions: [Migrator],
     migrations: {
@@ -38,12 +38,14 @@ const mySqlConfig: Options = {
     ...defaultDbConfig,
 }
 
-export const DB = {} as {
+export interface DB {
     server: http.Server
     orm: MikroORM
     em: EntityManager
     users: EntityRepository<UserEntity>
 }
+
+export const DB = {} as DB
 
 export const initDb = (dbConfig: Options) => {
     DB.orm = MikroORM.initSync(dbConfig)

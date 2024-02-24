@@ -12,5 +12,6 @@ export default {
     forceExit: true,
     globalSetup: '<rootDir>/config/global-start.config.ts',
     globalTeardown: '<rootDir>/config/global-stop.config.ts',
+    setupFilesAfterEnv: ['<rootDir>/config/global-hooks.config.ts'],
     rootDir: './',
 }

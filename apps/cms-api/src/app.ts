@@ -4,45 +4,49 @@ import express, { Router } from 'express'
 import * as path from 'path'
 // eslint-disable-next-line
 import 'express-async-errors'
-import { EnvFile, getAppConfig } from './config/app.config'
+import { loadAppConfig } from './config/app.config'
 import { initDb } from './config/db.config'
-import { httpLogger, logger } from './config/logger.config'
-import { globalErrorHandler } from './exceptions/exception.handler'
-import { routers } from './routers'
+import { appLogger } from './config/logger.config'
+import { checkAccess } from './middlewares/check-access.middleware'
+import { errorHandler } from './middlewares/error-handler.middleware'
+import { httpLogger } from './middlewares/http-logger.middleware'
+import { sessionHandler } from './middlewares/session-handler.middleware'
+import { routers } from './routers/_index'
 import { startSchedulers } from './scheduler'
 
-type AppParams = {
+export type AppParams = {
     dbConfig: Options
-    envFile?: EnvFile
+    envFile?: string
     additionalRouters?: { prefix: string; router: Router }[]
 }
 
 export function startApp({ envFile, dbConfig, additionalRouters = [] }: AppParams) {
     const app = express()
 
-    getAppConfig(envFile)
-    const DB = initDb(dbConfig)
+    loadAppConfig(envFile)
+    const db = initDb(dbConfig)
     startSchedulers()
 
-    app.use((_req, _res, next) => RequestContext.create(DB.orm.em, next))
-    app.use(cors())
+    app.use((_req, _res, next) => RequestContext.create(db.orm.em, next))
+    app.use(cors({ credentials: true, origin: 'http://localhost:4200' }))
     app.use(express.json())
     app.use(httpLogger)
+    app.use(sessionHandler(db.em))
 
     app.use('/assets', express.static(path.join(__dirname, 'assets')))
-    app.use('/api', routers)
+    app.use('/api', [checkAccess], routers)
     additionalRouters.forEach(({ prefix, router }) => {
         app.use(prefix, router)
     })
 
-    app.use(globalErrorHandler)
+    app.use(errorHandler)
 
     const port = process.env.PORT || 3333
     const server = app.listen(port, () => {
         server.emit('ready')
-        logger.info(`Api started at http://localhost:${port}`)
+        appLogger.info(`Api started at http://localhost:${port}`)
     })
-    server.on('error', logger.error)
+    server.on('error', appLogger.error)
 
     return { app, server }
 }

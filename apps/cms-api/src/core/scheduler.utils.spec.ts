@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { onInstanceCreation } from './scheduler.utils'
 
 describe('onInstanceCreation decorator', () => {
@@ -49,15 +51,11 @@ describe('onInstanceCreation decorator', () => {
     })
 
     it('should provide constructor of decorated class as a parameter', () => {
-        let providedParam: any
-
         @onInstanceCreation((param) => {
-            providedParam = param
+            expect(typeof param).toBe('function')
+            expect(param.name).toBe('Test')
         })
         class Test {}
         new Test()
-
-        expect(typeof providedParam).toBe('function')
-        expect(providedParam.name).toBe('Test')
     })
 })

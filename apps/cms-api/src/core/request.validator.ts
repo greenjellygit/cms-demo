@@ -12,7 +12,7 @@ export type TypResponse<T> = Response<T>
 export type SchemaError = {
     prop: string
     errors?: Record<string, string>
-    children: SchemaError[]
+    children?: SchemaError[]
 }
 
 export function getValidationErrors(errors?: ValidationError[]): SchemaError[] {
