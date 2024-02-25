@@ -10,6 +10,7 @@ import { checkAccess } from './middlewares/check-access.middleware'
 import { csrfProtection } from './middlewares/csrf-protection.middleware'
 import { errorHandler } from './middlewares/error-handler.middleware'
 import { httpLogger } from './middlewares/http-logger.middleware'
+import { handleRequestContext } from './middlewares/request-context.middleware'
 import { sessionHandler } from './middlewares/session-handler.middleware'
 import { apiRouters, rootRouters } from './routers/_index'
 import { startSchedulers } from './scheduler'
@@ -32,6 +33,7 @@ export function startApp({ envFile, dbConfig, additionalRouters = [] }: AppParam
     app.use(express.json())
     app.use(httpLogger)
     app.use(sessionHandler(db.em))
+    app.use(handleRequestContext)
 
     app.use('/assets', express.static(path.join(__dirname, 'assets')))
     app.use(csrfProtection())

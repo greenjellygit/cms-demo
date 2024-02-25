@@ -17,12 +17,18 @@ import { DB, defaultDbConfig } from '../../config/db.config'
 import { appLogger } from '../../config/logger.config'
 import { testRouter } from './test.router'
 
+type TestContext = {
+    app: express.Express
+    server: Server
+    DB: DB
+    apiClient: Agent
+    authorizedApiClient: Agent & {
+        userId?: string
+    }
+}
+
 declare global {
-    var app: express.Express
-    var server: Server
-    var DB: DB
-    var apiClient: Agent
-    var authorizedApiClient: Agent
+    var ctx: TestContext
 }
 
 export const sqliteConfig: Options = {
@@ -66,7 +72,9 @@ export default async () => {
         additionalRouters: [{ prefix: '/test', router: testRouter }],
     })
     await untilAppReady(server)
-    global.app = app
-    global.server = server
-    global.DB = DB
+    global.ctx = {
+        app,
+        server,
+        DB,
+    } as TestContext
 }

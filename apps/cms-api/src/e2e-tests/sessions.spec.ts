@@ -8,7 +8,7 @@ describe('authentication flow', () => {
     let csrfToken: string
 
     it('should /users/register reject call without csrf token', async () => {
-        const response = await request(app)
+        const response = await request(ctx.app)
             .post('/api/users/register')
             .send({ email: 'test@test.pl', password: 'Test123@' } as UserRegister)
 
@@ -17,7 +17,7 @@ describe('authentication flow', () => {
     })
 
     it('should /csrf-token allow obtain to csrf token', async () => {
-        const response = await request(app).get('/csrf-token')
+        const response = await request(ctx.app).get('/csrf-token')
 
         expect(response.statusCode).toBe(HttpStatusCode.Ok)
         expect(response.text).not.toBe(null)
@@ -28,7 +28,7 @@ describe('authentication flow', () => {
     })
 
     it('should /users/register allow to register user', async () => {
-        const response = await request(app)
+        const response = await request(ctx.app)
             .post('/api/users/register')
             .set('Cookie', [sessionCookie])
             .set({ 'x-csrf-token': csrfToken })
@@ -38,7 +38,7 @@ describe('authentication flow', () => {
     })
 
     it('should not allow to access restricted routes when user not authenticated', async () => {
-        const response = await request(app)
+        const response = await request(ctx.app)
             .get('/api/users/me')
             .set('Cookie', [sessionCookie])
             .set({ 'x-csrf-token': csrfToken })
@@ -48,7 +48,7 @@ describe('authentication flow', () => {
     })
 
     it('should /api/sessions not allow to authenticate not existing user', async () => {
-        const response = await request(app)
+        const response = await request(ctx.app)
             .post('/api/sessions')
             .set('Cookie', [sessionCookie])
             .set({ 'x-csrf-token': csrfToken })
@@ -59,7 +59,7 @@ describe('authentication flow', () => {
     })
 
     it('should /api/sessions not allow to authenticate without csrf token', async () => {
-        const response = await request(app)
+        const response = await request(ctx.app)
             .post('/api/sessions')
             .set('Cookie', [sessionCookie])
             .send({ email: 'test@test.pl', password: 'wrong_password' } as AuthCredentials)
@@ -69,7 +69,7 @@ describe('authentication flow', () => {
     })
 
     it('should /api/sessions not allow to authenticate using wrong password', async () => {
-        const response = await request(app)
+        const response = await request(ctx.app)
             .post('/api/sessions')
             .set('Cookie', [sessionCookie])
             .set({ 'x-csrf-token': csrfToken })
@@ -80,7 +80,7 @@ describe('authentication flow', () => {
     })
 
     it('should /api/sessions allow to authenticate existing user', async () => {
-        const response = await request(app)
+        const response = await request(ctx.app)
             .post('/api/sessions')
             .set('Cookie', [sessionCookie])
             .set({ 'x-csrf-token': csrfToken })
@@ -98,7 +98,7 @@ describe('authentication flow', () => {
     })
 
     it('should allow to access restricted route when authenticated', async () => {
-        const response = await request(app)
+        const response = await request(ctx.app)
             .get('/api/users/me')
             .set('Cookie', [sessionCookie])
             .set({ 'x-csrf-token': csrfToken })
@@ -113,7 +113,7 @@ describe('authentication flow', () => {
     })
 
     it('should /api/sessions allow to logout user', async () => {
-        const response = await request(app)
+        const response = await request(ctx.app)
             .delete('/api/sessions')
             .set('Cookie', [sessionCookie])
             .set({ 'x-csrf-token': csrfToken })
@@ -129,7 +129,7 @@ describe('authentication flow', () => {
     })
 
     it('should not allow to access restricted routes after logout', async () => {
-        const response = await request(app)
+        const response = await request(ctx.app)
             .get('/api/users/me')
             .set('Cookie', [sessionCookie])
             .set({ 'x-csrf-token': csrfToken })

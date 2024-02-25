@@ -1,3 +1,3 @@
 export default async () => {
-    await global.server.close()
+    await ctx.server.close()
 }
