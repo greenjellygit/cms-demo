@@ -1,8 +1,13 @@
 import { Router } from 'express'
+import { router as csrfRouter } from './csrf.router'
 import { router as sessionRouter } from './session.router'
 import { router as userRouter } from './user.router'
 
-export const routers = Router()
+export const rootRouters = Router()
 
-routers.use('/users', userRouter)
-routers.use('/sessions', sessionRouter)
+rootRouters.use('/csrf-token', csrfRouter)
+
+export const apiRouters = Router()
+
+apiRouters.use('/users', userRouter)
+apiRouters.use('/sessions', sessionRouter)

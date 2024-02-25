@@ -12,7 +12,7 @@ router.post(
     validate(UserRegister),
     async (req: TypRequest<UserRegister>, res: TypResponse<void>) => {
         await userService.register(req.body)
-        res.sendStatus(HttpStatusCode.Created)
+        res.status(HttpStatusCode.Created).end()
     },
 )
 

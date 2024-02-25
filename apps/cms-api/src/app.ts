@@ -1,17 +1,17 @@
 import { Options, RequestContext } from '@mikro-orm/core'
 import cors from 'cors'
 import express, { Router } from 'express'
-import * as path from 'path'
-// eslint-disable-next-line
 import 'express-async-errors'
+import * as path from 'path'
 import { loadAppConfig } from './config/app.config'
 import { initDb } from './config/db.config'
 import { appLogger } from './config/logger.config'
 import { checkAccess } from './middlewares/check-access.middleware'
+import { csrfProtection } from './middlewares/csrf-protection.middleware'
 import { errorHandler } from './middlewares/error-handler.middleware'
 import { httpLogger } from './middlewares/http-logger.middleware'
 import { sessionHandler } from './middlewares/session-handler.middleware'
-import { routers } from './routers/_index'
+import { apiRouters, rootRouters } from './routers/_index'
 import { startSchedulers } from './scheduler'
 
 export type AppParams = {
@@ -34,7 +34,9 @@ export function startApp({ envFile, dbConfig, additionalRouters = [] }: AppParam
     app.use(sessionHandler(db.em))
 
     app.use('/assets', express.static(path.join(__dirname, 'assets')))
-    app.use('/api', [checkAccess], routers)
+    app.use(csrfProtection())
+    app.use('/', rootRouters)
+    app.use('/api', [checkAccess], apiRouters)
     additionalRouters.forEach(({ prefix, router }) => {
         app.use(prefix, router)
     })

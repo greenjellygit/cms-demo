@@ -1,3 +1,5 @@
+/* eslint-disable no-var */
+/* eslint-disable vars-on-top */
 /* eslint-disable import/first */
 
 import { register } from 'tsconfig-paths'
@@ -8,6 +10,7 @@ import { Options } from '@mikro-orm/core'
 import { AbstractSqlConnection, SqliteDriver } from '@mikro-orm/sqlite'
 import express from 'express'
 import { Server } from 'http'
+import { Agent } from 'supertest'
 import { startApp } from '../../app'
 import { EnvFile } from '../../config/app.config'
 import { DB, defaultDbConfig } from '../../config/db.config'
@@ -15,12 +18,11 @@ import { appLogger } from '../../config/logger.config'
 import { testRouter } from './test.router'
 
 declare global {
-    // eslint-disable-next-line
     var app: express.Express
-    // eslint-disable-next-line
     var server: Server
-    // eslint-disable-next-line
     var DB: DB
+    var apiClient: Agent
+    var authorizedApiClient: Agent
 }
 
 export const sqliteConfig: Options = {

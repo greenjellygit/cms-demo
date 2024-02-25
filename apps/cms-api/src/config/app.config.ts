@@ -45,7 +45,7 @@ export const EnvFile = {
     TEST_ENV: `${__dirname}/../../.env.test`,
 }
 
-export const loadAppConfig = (envFile: string = EnvFile.ENV) => {
+export const loadAppConfig = (envFile: string = EnvFile.ENV): void => {
     if (config.path !== envFile) {
         config.path = envFile
         config.settings = mapToDto(
