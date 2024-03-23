@@ -3,6 +3,6 @@ import { AuditedEntity } from './audited.entity'
 
 @Entity({ tableName: 'products' })
 export class ProductEntity extends AuditedEntity {
-    @Property({ nullable: false })
+    @Property()
     name: string
 }

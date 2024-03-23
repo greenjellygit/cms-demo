@@ -3,12 +3,12 @@ import { RequestContextProvider } from '../middlewares/request-context.middlewar
 import { BaseEntity } from './base.entity'
 
 export abstract class AuditedEntity extends BaseEntity {
-    @Property({ nullable: false })
+    @Property({ nullable: true })
     createdBy: string & Opt
 
     @BeforeCreate()
     public setCreatedBy() {
         const requestContext = RequestContextProvider.get()
-        this.createdBy = requestContext.getUserId()
+        this.createdBy = requestContext?.getUserId()
     }
 }

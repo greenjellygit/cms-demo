@@ -3,59 +3,68 @@
 import { onInstanceCreation } from './scheduler.utils'
 
 describe('onInstanceCreation decorator', () => {
-    it('should call function after class instance created', () => {
-        const mockFunc = jest.fn()
+    it('should execute callback after class instance created', () => {
+        const callbackFunc = jest.fn()
 
-        @onInstanceCreation(() => {
-            mockFunc()
-        })
+        @onInstanceCreation(callbackFunc)
         class Test {}
 
         new Test()
         new Test()
 
-        expect(mockFunc).toHaveBeenCalledTimes(2)
+        expect(callbackFunc).toHaveBeenCalledTimes(2)
     })
 
-    it('should call function together with constructor', () => {
-        const mockFunc = jest.fn()
+    it('should execute callback together with constructor', () => {
+        const callbackFunc = jest.fn()
+        const constructorFunc = jest.fn()
 
-        @onInstanceCreation(() => {
-            mockFunc()
-        })
+        @onInstanceCreation(callbackFunc)
         class Test {
             constructor() {
-                mockFunc()
+                constructorFunc()
             }
         }
 
         new Test()
         new Test()
 
-        expect(mockFunc).toHaveBeenCalledTimes(4)
+        expect(callbackFunc).toHaveBeenCalledTimes(2)
+        expect(constructorFunc).toHaveBeenCalledTimes(2)
     })
 
-    it('should not call function when instance not created', () => {
-        const mockFunc = jest.fn()
+    it('should not execute callback when instance is not created', () => {
+        const callbackFunc = jest.fn()
 
         @onInstanceCreation(() => {
-            mockFunc()
+            callbackFunc()
         })
         class Test {
             constructor() {
-                mockFunc()
+                callbackFunc()
             }
         }
 
-        expect(mockFunc).toHaveBeenCalledTimes(0)
+        expect(callbackFunc).toHaveBeenCalledTimes(0)
     })
 
-    it('should provide constructor of decorated class as a parameter', () => {
+    it('should provide instance of decorated class as a callback parameter', () => {
         @onInstanceCreation((param) => {
-            expect(typeof param).toBe('function')
-            expect(param.name).toBe('Test')
+            expect(param.privateProp).toBe('private prop')
+            expect(param.publicProp).toBe('public prop')
+            // eslint-disable-next-line no-use-before-define
+            expect(param instanceof Test)
         })
-        class Test {}
-        new Test()
+        class Test {
+            public publicProp: string
+            constructor(
+                private privateProp: string,
+                public prop: string,
+            ) {
+                this.publicProp = prop
+            }
+        }
+
+        new Test('private prop', 'public prop')
     })
 })

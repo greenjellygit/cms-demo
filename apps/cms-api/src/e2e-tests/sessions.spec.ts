@@ -16,6 +16,16 @@ describe('authentication flow', () => {
         expect(response.text).toBe('invalid csrf token')
     })
 
+    it('should /users/register reject call with fake csrf token', async () => {
+        const response = await request(ctx.app)
+            .post('/api/users/register')
+            .set({ 'x-csrf-token': 'fake_csrf_token' })
+            .send({ email: 'test@test.pl', password: 'Test123@' } as UserRegister)
+
+        expect(response.statusCode).toBe(HttpStatusCode.Forbidden)
+        expect(response.text).toBe('invalid csrf token')
+    })
+
     it('should /csrf-token allow obtain to csrf token', async () => {
         const response = await request(ctx.app).get('/csrf-token')
 
@@ -25,9 +35,20 @@ describe('authentication flow', () => {
         const [sessionCookieValue] = response.get('Set-Cookie')
         sessionCookie = sessionCookieValue
         csrfToken = response.text
+        expect(csrfToken).not.toBeFalsy()
     })
 
-    it('should /users/register allow to register user', async () => {
+    it('should /users/register reject call after obtaining csrf token but sending request without csrf token', async () => {
+        const response = await request(ctx.app)
+            .post('/api/users/register')
+            .set('Cookie', [sessionCookie])
+            .send({ email: 'test@test.pl', password: 'Test123@' } as UserRegister)
+
+        expect(response.statusCode).toBe(HttpStatusCode.Forbidden)
+        expect(response.text).toBe('invalid csrf token')
+    })
+
+    it('should /users/register allow to register user when csrf token included in headers', async () => {
         const response = await request(ctx.app)
             .post('/api/users/register')
             .set('Cookie', [sessionCookie])

@@ -17,6 +17,6 @@ describe('global error handler', () => {
     it('should handle http exception and return response', async () => {
         const response = await request(ctx.app).get('/test/http-exception')
         expect(response.statusCode).toBe(HttpStatusCode.ImATeapot)
-        expect(response.text).toBe('some http exception')
+        expect(response.text).toBe('Some http exception')
     })
 })

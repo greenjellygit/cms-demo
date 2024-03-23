@@ -13,14 +13,14 @@ import { Server } from 'http'
 import { Agent } from 'supertest'
 import { startApp } from '../../app'
 import { EnvFile } from '../../config/app.config'
-import { DB, defaultDbConfig } from '../../config/db.config'
+import { DB, DbAccess, defaultDbConfig } from '../../config/db.config'
 import { appLogger } from '../../config/logger.config'
 import { testRouter } from './test.router'
 
 type TestContext = {
     app: express.Express
     server: Server
-    DB: DB
+    DB: DbAccess
     apiClient: Agent
     authorizedApiClient: Agent & {
         userId?: string

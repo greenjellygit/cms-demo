@@ -19,13 +19,17 @@
                 }
             }
         },
-        "migrate-up": {
+        "migration-up": {
             "executor": "nx:run-commands",
             "options": { "command": "npx mikro-orm migration:up", "cwd": "./apps/cms-api" }
         },
-        "migrate-down": {
+        "migration-down": {
             "executor": "nx:run-commands",
             "options": { "command": "npx mikro-orm migration:down", "cwd": "./apps/cms-api" }
+        },
+        "migration-create": {
+            "executor": "nx:run-commands",
+            "options": { "command": "npx mikro-orm migration:create", "cwd": "./apps/cms-api" }
         },
         "test-unit": {
             "executor": "nx:run-commands",

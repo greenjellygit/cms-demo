@@ -40,3 +40,4 @@ Thumbs.db
 
 .nx/cache
 cms_demo_db
+.env

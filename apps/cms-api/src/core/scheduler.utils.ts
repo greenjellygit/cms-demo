@@ -6,12 +6,14 @@ import { appLogger } from '../config/logger.config'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Constructor = new (...args: any[]) => any
 
-export function onInstanceCreation<TBase extends Constructor>(callback: (constr: TBase) => void) {
+export function onInstanceCreation<TBase extends Constructor>(
+    callback: (constr: InstanceType<TBase>) => void,
+) {
     return (Base: TBase) =>
         class extends Base {
             constructor(...args: ConstructorParameters<Constructor>) {
                 super(...args)
-                callback(Base)
+                callback(this as InstanceType<TBase>)
             }
         }
 }
@@ -23,23 +25,24 @@ export function Job(cronExpression: string) {
 }
 
 export function Scheduler() {
-    return onInstanceCreation((constr) => {
-        const cronDefinitions = Reflect.ownKeys(constr.prototype)
-            .filter((propertyKey) => Reflect.hasMetadata('job', constr.prototype, propertyKey))
+    return onInstanceCreation((instance) => {
+        const prototype = Object.getPrototypeOf(Object.getPrototypeOf(instance))
+        const cronDefinitions = Reflect.ownKeys(prototype)
+            .filter((propertyKey) => Reflect.hasMetadata('job', prototype, propertyKey))
             .map((propertyKey) => {
-                const metadata = Reflect.getMetadata('job', constr.prototype, propertyKey)
+                const metadata = Reflect.getMetadata('job', prototype, propertyKey)
                 return {
                     cronExpression: metadata.cronExpression,
-                    cronJob: constr.prototype[propertyKey],
+                    cronJob: prototype[propertyKey].bind(instance),
                     cronName: propertyKey as string,
                 }
             })
 
         if (getAppConfig().enableScheduler) {
-            const schedulerName = constr.name
+            const schedulerName = 'asd'
             cronDefinitions.forEach(({ cronExpression, cronJob, cronName }) => {
                 cron.schedule(cronExpression, () => {
-                    appLogger.info(`[${schedulerName}] ${cronName} - started`)
+                    appLogger.info(`[${schedulerName}] Executing scheduled job [${cronName}]`)
                     cronJob()
                 })
             })

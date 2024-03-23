@@ -1,7 +1,13 @@
 import { EntityManager, EntityRepository, MikroORM, Options } from '@mikro-orm/core'
 import { Migrator } from '@mikro-orm/migrations'
 import { MySqlDriver } from '@mikro-orm/mysql'
-import http from 'http'
+import { MailAttachmentEntity } from '../entities/mail-attachment.entity'
+import {
+    MailParamEmbeddedImageEntity,
+    MailParamEntity,
+    MailParamTextEntity,
+} from '../entities/mail-param.entity'
+import { MailEntity } from '../entities/mail.entity'
 import { ProductEntity } from '../entities/product.entity'
 import { UserEntity } from '../entities/user.entity'
 import { getAppConfig } from './app.config'
@@ -14,7 +20,15 @@ import {
 
 export const defaultDbConfig: Options = {
     dbName: 'cms_demo_db',
-    entities: [UserEntity, ProductEntity],
+    entities: [
+        UserEntity,
+        ProductEntity,
+        MailEntity,
+        MailParamEntity,
+        MailParamTextEntity,
+        MailParamEmbeddedImageEntity,
+        MailAttachmentEntity,
+    ],
     logger: (msg) => appLogger.info(msg),
     forceUtcTimezone: true,
     extensions: [Migrator],
@@ -37,21 +51,35 @@ const mySqlConfig: Options = {
     ...defaultDbConfig,
 }
 
-export interface DB {
-    server: http.Server
+export interface DbAccess {
     orm: MikroORM
     em: EntityManager
     users: EntityRepository<UserEntity>
     products: EntityRepository<ProductEntity>
+    mails: EntityRepository<MailEntity>
+    mailTextParams: EntityRepository<MailParamTextEntity>
+    mailEmbeddedImageParams: EntityRepository<MailParamEmbeddedImageEntity>
+    mailAttachments: EntityRepository<MailAttachmentEntity>
+    fork: () => DbAccess
 }
 
-export const DB = {} as DB
+export const DB = {} as DbAccess
+
+const createDbAccess = (orm: MikroORM, em: EntityManager): DbAccess => ({
+    orm,
+    em,
+    users: em.getRepository(UserEntity),
+    products: em.getRepository(ProductEntity),
+    mails: em.getRepository(MailEntity),
+    mailTextParams: em.getRepository(MailParamTextEntity),
+    mailEmbeddedImageParams: em.getRepository(MailParamEmbeddedImageEntity),
+    mailAttachments: em.getRepository(MailAttachmentEntity),
+    fork: () => createDbAccess(orm, em.fork()) as DbAccess,
+})
 
 export const initDb = (dbConfig: Options) => {
-    DB.orm = MikroORM.initSync(dbConfig)
-    DB.em = DB.orm.em
-    DB.users = DB.orm.em.getRepository(UserEntity)
-    DB.products = DB.orm.em.getRepository(ProductEntity)
+    const orm = MikroORM.initSync(dbConfig)
+    Object.assign(DB, createDbAccess(orm, orm.em))
     return DB
 }
 

@@ -12,7 +12,7 @@ testRouter.get('/promise-rejection', async () => {
 })
 testRouter.get('/http-exception', () => {
     throw new HttpException({
-        message: 'some http exception',
+        message: 'Some http exception',
         statusCode: HttpStatusCode.ImATeapot,
     })
 })

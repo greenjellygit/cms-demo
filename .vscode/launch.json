@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Start cms-web",
+            "name": "cms-web - start",
             "type": "chrome",
             "request": "launch",
             "url": "http://localhost:4200",
@@ -11,7 +11,7 @@
             "postDebugTask": "stop-cms-web"
         },
         {
-            "name": "Start cms-api",
+            "name": "cms-api - start",
             "type": "node",
             "request": "launch",
             "runtimeExecutable": "nx",
@@ -21,11 +21,31 @@
             "cwd": "${workspaceFolder}/apps/cms-api"
         },
         {
-            "name": "Start cms-api tests",
+            "name": "cms-api - unit tests",
             "type": "node",
             "request": "launch",
             "runtimeExecutable": "nx",
-            "runtimeArgs": ["run", "cms-api:test"],
+            "runtimeArgs": ["run", "cms-api:test-unit"],
+            "console": "integratedTerminal",
+            "outFiles": ["${workspaceFolder}/**/*.js", "!**/node_modules/**"],
+            "cwd": "${workspaceFolder}/apps/cms-api"
+        },
+        {
+            "name": "cms-api - e2e tests",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "nx",
+            "runtimeArgs": ["run", "cms-api:test-e2e"],
+            "console": "integratedTerminal",
+            "outFiles": ["${workspaceFolder}/**/*.js", "!**/node_modules/**"],
+            "cwd": "${workspaceFolder}/apps/cms-api"
+        },
+        {
+            "name": "cms-api - migration up",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "nx",
+            "runtimeArgs": ["run", "cms-api:migration-up"],
             "console": "integratedTerminal",
             "outFiles": ["${workspaceFolder}/**/*.js", "!**/node_modules/**"],
             "cwd": "${workspaceFolder}/apps/cms-api"
