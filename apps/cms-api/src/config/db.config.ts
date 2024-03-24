@@ -10,6 +10,7 @@ import {
 import { MailEntity } from '../entities/mail.entity'
 import { ProductEntity } from '../entities/product.entity'
 import { UserEntity } from '../entities/user.entity'
+import { MailEntityRepository } from '../repositories/mail-entity.repository'
 import { getAppConfig } from './app.config'
 import { appLogger } from './logger.config'
 import {
@@ -56,7 +57,7 @@ export interface DbAccess {
     em: EntityManager
     users: EntityRepository<UserEntity>
     products: EntityRepository<ProductEntity>
-    mails: EntityRepository<MailEntity>
+    mails: MailEntityRepository
     mailTextParams: EntityRepository<MailParamTextEntity>
     mailEmbeddedImageParams: EntityRepository<MailParamEmbeddedImageEntity>
     mailAttachments: EntityRepository<MailAttachmentEntity>

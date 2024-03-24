@@ -1,5 +1,6 @@
 import { Collection, Entity, Enum, OneToMany, Opt, Property } from '@mikro-orm/core'
 import { MailType } from '../mail/templates/definitions'
+import { MailEntityRepository } from '../repositories/mail-entity.repository'
 import { AuditedEntity } from './audited.entity'
 import { MailAttachmentEntity } from './mail-attachment.entity'
 import { MailParamEntity } from './mail-param.entity'
@@ -12,7 +13,7 @@ export enum MailStatus {
     ERROR = 'ERROR',
 }
 
-@Entity({ tableName: 'mails' })
+@Entity({ tableName: 'mails', repository: () => MailEntityRepository })
 export class MailEntity extends AuditedEntity {
     @Enum(() => MailType)
     type!: MailType

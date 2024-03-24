@@ -39,7 +39,7 @@ export function Scheduler() {
             })
 
         if (getAppConfig().enableScheduler) {
-            const schedulerName = 'asd'
+            const schedulerName = prototype.constructor.name
             cronDefinitions.forEach(({ cronExpression, cronJob, cronName }) => {
                 cron.schedule(cronExpression, () => {
                     appLogger.info(`[${schedulerName}] Executing scheduled job [${cronName}]`)
